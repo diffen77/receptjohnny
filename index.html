@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReceptJohnny</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <header>
+        <h1>ReceptJohnny</h1>
+        <nav>
+            <button onclick="showTab('ingredientsTab')">Ingredienser</button>
+            <button onclick="showTab('recipesTab')">Recept</button>
+            <button onclick="showTab('savedRecipesTab')">Sparade Recept</button>
+        </nav>
+    </header>
+    <main>
+        <section id="ingredientsTab" class="tab">
+            <h2>Ingredienser</h2>
+            <form id="ingredientForm" onsubmit="addIngredient(event)">
+                <label for="ingredientName">Namn:</label>
+                <input type="text" id="ingredientName" required>
+                <label for="ingredientCost">Kostnad (kr/kg):</label>
+                <input type="number" id="ingredientCost" step="any" required>
+                <button type="submit">Lägg till ingrediens</button>
+            </form>
+            <ul id="ingredientList"></ul>
+        </section>
+        <section id="recipesTab" class="tab">
+            <h2>Recept</h2>
+            <form id="recipeForm" onsubmit="saveRecipe(event)">
+                <label for="title">Titel:</label>
+                <input type="text" id="title" required>
+                <label for="primaryIngredient">Primär ingrediens:</label>
+                <select id="primaryIngredient" required></select>
+                <label for="primaryQuantity">Mängd (g):</label>
+                <input type="number" id="primaryQuantity" step="any" required>
+                <label for="portionSize">Portionsstorlek (g):</label>
+                <input type="number" id="portionSize" step="any" required>
+                <h3>Ingredienser</h3>
+                <div id="recipeIngredientsList"></div>
+                <button type="button" onclick="addRecipeIngredient()">Lägg till ingrediens</button>
+                <h3>Instruktioner</h3>
+                <div id="instructionsList"></div>
+                <button type="button" onclick="addInstruction()">Lägg till instruktion</button>
+                <button type="submit">Spara recept</button>
+            </form>
+        </section>
+        <section id="savedRecipesTab" class="tab">
+            <h2>Sparade Recept</h2>
+            <ul id="savedRecipesList"></ul>
+        </section>
+    </main>
+</body>
+</html>

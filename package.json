@@ -1,0 +1,8 @@
+{
+    "scripts": {
+      "test": "node test.js", // Byt ut mot ditt testkommando
+      "lint": "eslint .", // Valfritt om du använder ESLint
+      "build": "npm run build" // Om du har ett byggsteg
+    }
+  }
+  
