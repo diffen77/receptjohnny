@@ -1,44 +1,39 @@
-
-name: Auto-Update
+name: Auto Update Repository
 
 on:
   push:
-    branches:
-      - master
-  workflow_dispatch:
+    paths:
+      - '**/*'
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
-  auto-update:
+  update-repo:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: |
+          npm install
 
-    - name: Run tests
-      run: npm test
+      - name: Run tests
+        run: |
+          npm test
 
-    - name: Push changes back to repository
-      run: |
-        git config --local user.name "github-actions[bot]"
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git add .
-        git commit -m "Automated updates from GitHub Actions" || echo "No changes to commit"
-        git push
-
-    - name: Commit changes
-      run: |
-        git config --local user.name "github-actions[bot]"
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git add .
-        git commit -m "Automated updates from GitHub Actions"
-        git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/diffen77/receptjohnny.git HEAD:master
-    
+      - name: Commit changes
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Automated updates from GitHub Actions" || echo "No changes to commit"
+          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/diffen77/receptjohnny.git HEAD:master
