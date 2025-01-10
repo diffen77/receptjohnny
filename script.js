@@ -154,41 +154,51 @@ function viewRecipe(index) {
     const recipe = recipes[index];
     const details = document.getElementById("recipeDetails");
 
-    // Beräkna total vikt och total kostnad
-    const primaryWeight = recipe.primaryQuantity;
-    let totalWeight = primaryWeight; // Börja med primär ingrediensens vikt
-    let totalCost = 0;
+    // Beräkna totalvikt av receptet
+    const totalWeight =
+        recipe.primaryQuantity +
+        recipe.ingredients.reduce(
+            (sum, ingredient) => sum + (ingredient.quantity / 100) * recipe.primaryQuantity,
+            0
+        );
 
-    // Lägg till övriga ingrediensernas vikt och kostnad
-    recipe.ingredients.forEach((ingredient) => {
-        const ingredientWeight = (primaryWeight * ingredient.quantity) / 100;
-        const ingredientCost = ingredientWeight * (ingredients.find((ing) => ing.name === ingredient.name)?.cost || 0);
-        totalWeight += ingredientWeight;
-        totalCost += ingredientCost;
-    });
+    // Beräkna antal portioner
+    const portionCount = Math.floor(totalWeight / recipe.portionSize);
 
-    // Lägg till primär ingrediensens kostnad
-    const primaryCost = primaryWeight * (ingredients.find((ing) => ing.name === recipe.primaryIngredient)?.cost || 0);
-    totalCost += primaryCost;
+    // Primär ingrediens + övriga ingredienser
+    const allIngredients = [
+        { name: recipe.primaryIngredient, quantity: recipe.primaryQuantity, isPrimary: true },
+        ...recipe.ingredients.map((ingredient) => ({
+            name: ingredient.name,
+            quantity: (ingredient.quantity / 100) * recipe.primaryQuantity,
+            isPrimary: false,
+        })),
+    ];
 
-    // Visa receptdetaljer inklusive total vikt och kostnad
+    // Visa receptdetaljer med vikt och antal portioner
     details.innerHTML = `
         <h3>${recipe.title}</h3>
-        <p>Primär ingrediens: ${recipe.primaryIngredient} (${primaryWeight} g)</p>
         <p>Portionsstorlek: ${recipe.portionSize} g</p>
+        <p>Total vikt: ${totalWeight.toFixed(2)} g</p>
+        <p>Antal portioner: ${portionCount}</p>
         <h4>Ingredienser:</h4>
         <ul>
-            ${recipe.ingredients
-                .map((ingredient) => {
-                    const ingredientWeight = (primaryWeight * ingredient.quantity) / 100;
-                    return `<li>${ingredient.name}: ${ingredient.quantity}% (${ingredientWeight.toFixed(2)} g)</li>`;
-                })
+            ${allIngredients
+                .map(
+                    (ingredient) =>
+                        `<li>${ingredient.name}: ${
+                            ingredient.isPrimary
+                                ? `${ingredient.quantity.toFixed(2)} g (Primär ingrediens)`
+                                : `${ingredient.quantity.toFixed(2)} g`
+                        }</li>`
+                )
                 .join("")}
         </ul>
         <h4>Instruktioner:</h4>
-        <ol>${recipe.instructions.map((instruction) => `<li>${instruction}</li>`).join("")}</ol>
-        <p><strong>Total vikt:</strong> ${totalWeight.toFixed(2)} g</p>
-        <p><strong>Total kostnad:</strong> ${totalCost.toFixed(2)} kr</p>
+        <ol>
+            ${recipe.instructions.map((instruction) => `<li>${instruction}</li>`).join("")}
+        </ol>
     `;
 }
+
 
