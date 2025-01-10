@@ -1,8 +1,11 @@
 {
-    "scripts": {
-      "test": "node test.js", // Byt ut mot ditt testkommando
-      "lint": "eslint .", // Valfritt om du använder ESLint
-      "build": "npm run build" // Om du har ett byggsteg
-    }
-  }
-  
+  "name": "receptjohnny",
+  "version": "1.0.0",
+  "description": "Ett verktyg för att hantera recept och ingredienser.",
+  "main": "script.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "Ditt namn",
+  "license": "MIT"
+}
