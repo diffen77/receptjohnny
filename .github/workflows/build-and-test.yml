@@ -1,0 +1,40 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Steg 1: Klona koden
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      # Steg 2: Installera Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      # Steg 3: Installera beroenden
+      - name: Install dependencies
+        run: npm install
+
+      # Steg 4: Kör tester
+      - name: Run tests
+        run: npm test
+
+      # Steg 5: Linter (valfritt, om du använder ESLint)
+      - name: Run linter
+        run: npm run lint
+
+      # Steg 6: Bygg projektet (valfritt, om det behövs för frontend)
+      - name: Build project
+        run: npm run build
