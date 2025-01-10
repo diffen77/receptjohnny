@@ -3,7 +3,7 @@ name: Auto Update and Commit
 on:
   push:
     branches:
-      - main # Kör arbetsflödet när du pushar till main
+      - master # Kör arbetsflödet när du pushar till main
 
 jobs:
   update-repo:
