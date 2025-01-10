@@ -1,44 +1,35 @@
-name: Auto Update and Commit
+
+name: Auto-Update
 
 on:
   push:
     branches:
-      - master # Kör arbetsflödet när du pushar till main
+      - master
+  workflow_dispatch:
 
 jobs:
-  update-repo:
+  auto-update:
     runs-on: ubuntu-latest
 
     steps:
-    # Steg 1: Klona repo
     - name: Check out repository
       uses: actions/checkout@v3
 
-    # Steg 2: Installera Node.js (för att köra JavaScript om det behövs)
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '16'
 
-    # Steg 3: Installera beroenden (om du har en package.json)
     - name: Install dependencies
-      run: |
-        if [ -f package.json ]; then
-          npm install
-        fi
+      run: npm install
 
-    # Steg 4: Generera uppdaterade filer
-    - name: Generate updates
-      run: |
-        node script.js # Justera detta för att köra ditt script som genererar eller uppdaterar filer
+    - name: Run tests
+      run: npm test
 
-    # Steg 5: Commit och pusha ändringar
-    - name: Commit and push changes
+    - name: Push changes back to repository
       run: |
-        git config --global user.name "GitHub Action Bot"
-        git config --global user.email "action@github.com"
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git add .
-        git diff-index --quiet HEAD || git commit -m "Automated updates by GitHub Actions"
+        git commit -m "Automated updates from GitHub Actions" || echo "No changes to commit"
         git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

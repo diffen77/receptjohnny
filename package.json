@@ -1,11 +1,14 @@
+
 {
   "name": "receptjohnny",
   "version": "1.0.0",
-  "description": "Ett verktyg för att hantera recept och ingredienser.",
-  "main": "script.js",
+  "description": "Ett projekt för hantering av recept och ingredienser.",
+  "main": "index.js",
   "scripts": {
     "test": "node test.js"
   },
-  "author": "Ditt namn",
-  "license": "MIT"
+  "author": "Ditt Namn",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
 }
